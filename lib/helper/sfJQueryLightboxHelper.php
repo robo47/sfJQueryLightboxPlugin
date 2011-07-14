@@ -4,7 +4,7 @@
  * @package sfJQueryLightboxPlugin
  * 
  * @author Artur Rozek
- * @version 1.0.0
+ * @version 2.0.0
  * 
  */
 
@@ -25,32 +25,37 @@ function light_image($thumb_url, $image_url, $image_link_options = array(), $thu
   
   $image_link_options['class'] = isset($image_link_options['class']) ? $image_link_options['class']." lightbox" : 'lightbox';
 
-  return link_to($thumb_tag, $image_url, $image_link_options);
+  echo link_to($thumb_tag, $image_url, $image_link_options);
 }
 
-function light_image_activate($txtImage = "Zdjęcie", $txtOf = "z")
+light_image_activate();
+function light_image_activate()
 {
+  if (!sfContext::hasInstance()) return;
+
   //add resources
   $response = sfContext::getInstance()->getResponse();
+
+  //check if jqueryreloaded plugin is activated
   if (sfConfig::has('sf_jquery_web_dir') && sfConfig::has('sf_jquery_core'))
     $response->addJavascript(sfConfig::get('sf_jquery_web_dir'). '/js/'.sfConfig::get('sf_jquery_core'));
   else
-    $response->addJavascript(sfConfig::get('sf_jquery_lightbox_js_dir').'jquery-1.3.1.min.js');
+    throw new Exception("Theres is no JqueryReloaded plugin !");
     
   //JQuery Lightbox specific
-  $response->addJavascript('/sfJQueryLightboxPlugin/js/jquery.lightbox-0.5.js');
-  $response->addStylesheet('/sfJQueryLightboxPlugin/css/jquery.lightbox-0.5.css');
+  $response->addJavascript(sfConfig::get("app_sf_jquery_lightbox_js_dir").'jquery.lightbox-0.5.js');
+  $response->addStylesheet(sfConfig::get("app_sf_jquery_lightbox_css_dir").'jquery.lightbox-0.5.css');
 
   $code = "$(function() {
     $('a.lightbox').lightBox({
-      imageLoading: '/sfJQueryLightboxPlugin/images/lightbox-ico-loading.gif',
-      imageBtnClose: '/sfJQueryLightboxPlugin/images/lightbox-btn-close.gif',
-      imageBtnPrev: '/sfJQueryLightboxPlugin/images/lightbox-btn-prev.gif',
-      imageBtnNext: '/sfJQueryLightboxPlugin/images/lightbox-btn-next.gif',
-      imageBlank: '/sfJQueryLightboxPlugin/images/lightbox-blank.gif',
-      txtImage: '$txtImage',
-      txtOf: '$txtOf' });
+      imageLoading: '".sfConfig::get('app_sf_jquery_lightbox_imageLoading')."',
+      imageBtnClose: '".sfConfig::get('app_sf_jquery_lightbox_imageBtnClose')."',
+      imageBtnPrev: '".sfConfig::get('app_sf_jquery_lightbox_imageBtnPrev')."',
+      imageBtnNext: '".sfConfig::get('app_sf_jquery_lightbox_imageBtnNext')."',
+      imageBlank: '".sfConfig::get('app_sf_jquery_lightbox_imageBlank')."',
+      txtImage: '".sfConfig::get('app_sf_jquery_lightbox_txtImage')."',
+      txtOf: '".sfConfig::get('app_sf_jquery_lightbox_txtOf')."' });
   });";
 
-  return javascript_tag($code);
+  echo javascript_tag($code);
 }

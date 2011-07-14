@@ -1,0 +1,11 @@
+all:
+  sf_jquery_lightbox:
+    css_dir: '/sfJQueryLightboxPlugin/css/'
+    js_dir:  '/sfJQueryLightboxPlugin/js/'
+    imageLoading: '/sfJQueryLightboxPlugin/images/lightbox-ico-loading.gif'
+    imageBtnClose: '/sfJQueryLightboxPlugin/images/lightbox-btn-close.gif'
+    imageBtnPrev: '/sfJQueryLightboxPlugin/images/lightbox-btn-prev.gif'
+    imageBtnNext: '/sfJQueryLightboxPlugin/images/lightbox-btn-next.gif'
+    imageBlank: '/sfJQueryLightboxPlugin/images/lightbox-blank.gif'
+    txtImage: 'Image'
+    txtOf: 'of'

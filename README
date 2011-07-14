@@ -8,28 +8,33 @@ This helper transfomrs image link into fully featured lightbox effect. Automatic
 
 This plugin uses awesome [jQuery library](http://www.jquery.com) and jQueryLightBox plugin by Leandro Vieira Pinho.
 
+[Try out demonstration](http://sfplugins.infoart.net.pl/jl/test1)
+
 Installation
 ------------
 
     $ symfony plugin:install sfJQueryLightBoxPlugin
     $ symfony cache:clear
 
+Requirements
+------------
+
+This plugin requires JqueryReloadedPlugin.
+
 Usage
 -----
 
-Place use_helper in your main layout:
+Place jQuery helper in your layout (or settings.yml):
+
+    <?php use_helper("jQuery") ?>
+
+And place JQueryLightbox helper somewhere inside your _body_ tag
 
     <?php use_helper("sfJQueryLightbox") ?>
  
 In template place light_image() function for every image you want to have lightbox effect:
 
     <?php echo light_image($thumbnail_url, $full_image_url, array('title' => $image_title )); ?>
-    
-Somewhere at the end of main layout place light_image_activate function:
-
-    <?php light_image_activate("Image", "of") ?>
-    
-"Image" and "of" is used for gallery text "Image 2 of 3".
     
 Customizations
 --------------
@@ -45,11 +50,16 @@ Where:
 * $image_link_options : additional html attributes to add to image link (e.g.: array ('title' => 'My image'))
 * $thumb_options :      additional html attributes to add to thumb image tag (e.g.: array ('border' => 5))
 
-You can also customize look and feel by modifying css (see css plugin dir) and images used by (see images plugin dir).
+In your app.yml file you can customize images used for displaying next, prev, close butons and text 'Image X of X':
 
-Notes
------
-
-Plugin likes but do not require sfJQueryReloadedPlugin. If sfJQueryReloadedPlugin is loaded then plugin uses it if not, plugin uses its own jquery library.
-
-Plugin uses jQuery so its not compatible with sfProtoculousPlugin (which has to be disabled).
+    all:
+      sf_jquery_lightbox:
+        css_dir: '/sfJQueryLightboxPlugin/css/'
+        js_dir:  '/sfJQueryLightboxPlugin/js/'
+        imageLoading: '/sfJQueryLightboxPlugin/images/lightbox-ico-loading.gif'
+        imageBtnClose: '/sfJQueryLightboxPlugin/images/lightbox-btn-close.gif'
+        imageBtnPrev: '/sfJQueryLightboxPlugin/images/lightbox-btn-prev.gif'
+        imageBtnNext: '/sfJQueryLightboxPlugin/images/lightbox-btn-next.gif'
+        imageBlank: '/sfJQueryLightboxPlugin/images/lightbox-blank.gif'
+        txtImage: 'Image'
+        txtOf: 'of'
